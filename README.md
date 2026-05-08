@@ -21,6 +21,7 @@ autonomous-indoor-navigation/
 │
 ├── assets/                  # Images for documentation
 ├── LICENSE
+└── README.md
 ```
 ---
 ## Key Features
@@ -42,10 +43,23 @@ The tag placement strategy follows a structured, visibility-aware optimization f
    * **Stage 1 (Functional Tags):** Prioritizes high-value task areas, placing markers specifically at doorways and functional zones.
    * **Stage 2 (Junction Tags):** Secures error-prone intersections (L- and T-junctions) by placing outer and inner tags to ensure continuous visibility during heading changes.
    * **Stage 3 (Corridor Tags):** Fills remaining straight-line gaps using a greedy iterative algorithm that penalizes redundancy and minimizes blackout regions.
-
+![methodology](/src/algorithm/algorithm/algorithm_flowchart.png)
 ---
 ## Results
+![methodology](/assets/fig10.jpg)
+![methodology](/assets/fig10b.jpg)
+![methodology](/assets/fig11.jpg)
+![methodology](/assets/fig12a.jpg)
+The proposed hierarchical optimization technique yielded significant improvements over manual and uniform placement strategies:
+
+**1. Localization Availability:** Achieved 94.2% availability in simulated environments and 92% - 98.6% in real-time hardware validation.
+
+**2. Infrastructure Reduction:** Reduced total marker infrastructure by 82% (from 178 candidate tags down to 32 optimized tags) compared to dense, uniform deployment.
+
+**3. Reduced Blackout:** Minimized maximum blackout lengths to just 0.3 meters in straight corridors.
+
+**4. Consistent Visibility:** Maintained a mean visibility of 1.011 tags per frame across the robot's entire trajectory.
+
+**5. Reliability:** Hardware validation on the Yahboom Jetson bot (NVIDIA Jetson Nano 4GB) confirmed the algorithm's robustness, matching theoretical predictions even at varying operational speeds
 
 
-
-└── README.md
