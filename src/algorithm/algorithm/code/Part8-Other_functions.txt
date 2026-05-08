@@ -1,0 +1,55 @@
+%% ====================================================================
+%% FUNCTIONS
+%% ====================================================================
+function P = make_notch_geometry(x_wall, x_depth, y_top, width, ds)
+    y_bot = y_top - width;
+    if x_wall > x_depth, x_h = x_wall:-ds:x_depth; else, x_h = x_wall:ds:x_depth; end
+    y_v = y_top:-ds:y_bot;
+    TopEdge = [x_h', y_top * ones(length(x_h),1)];
+    BackEdge = [x_depth * ones(length(y_v),1), y_v'];
+    BotEdge = [flip(x_h)', y_bot * ones(length(x_h),1)];
+    P = [TopEdge; BackEdge; BotEdge];
+end
+
+function [pct_avail, pct_reduction, max_blackout, mean_vis_all] = print_segment_metrics(V, selectedIdx, totalCand, Np, ds_path)
+    % 1. Vis Counts
+    if isempty(selectedIdx)
+        visCounts = zeros(Np,1);
+    else
+        visCounts = sum(V(:,selectedIdx), 2);
+    end
+    
+    coveredPoses = visCounts > 0;
+    
+    % 2. Calculate Metrics
+    pct_used = (length(selectedIdx) / totalCand) * 100;
+    pct_reduction = (1 - length(selectedIdx) / totalCand) * 100;
+    pct_avail = sum(coveredPoses) / Np * 100;
+    
+    % 3. Blackout Calculation
+    final_blackout_status = double(~coveredPoses);
+    gaps = []; currGap = 0;
+    for i = 1:Np
+        if final_blackout_status(i)
+            currGap = currGap + 1;
+        elseif currGap > 0
+            gaps = [gaps; currGap]; 
+            currGap = 0; 
+        end
+    end
+    if currGap > 0, gaps = [gaps; currGap]; end
+    if ~isempty(gaps)
+        max_blackout = max(gaps) * ds_path;
+    else
+        max_blackout = 0;
+    end
+    
+    % 4. Mean Visible Tags (All Frames)
+    mean_vis_all = mean(visCounts);
+    
+    % PRINT
+    fprintf('   > Percentage Used:        %.1f%% (%d of %d)\n', pct_used, length(selectedIdx), totalCand);
+    fprintf('   > Percentage Reduction:   %.1f%%\n', pct_reduction);
+    fprintf('   > Localization Avail:     %.1f%%\n', pct_avail);
+    fprintf('   > Max Blackout Length:    %.2f m\n', max_blackout);
+end
