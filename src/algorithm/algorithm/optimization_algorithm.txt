@@ -1,0 +1,145 @@
+Algorithm Map_Analysis_and_Visibility
+
+Input:
+    Centerline C(s)
+    Step size Δs
+    CandidateTagPositions T_cand
+    DetectionRange d_max
+    HFOV
+
+Output:
+    PoseSet P
+    VisibilityMatrix V(p,t)
+
+Begin
+    P ← Sample centerline at step Δs
+
+    For each pose p ∈ P do
+        Compute camera pose and heading
+    End For
+
+    For each candidate tag t ∈ T_cand do
+        For each pose p ∈ P do
+            If distance(p,t) ≤ d_max AND
+               bearing(p,t) within HFOV AND
+               line-of-sight valid then
+                   V(p,t) = 1
+            Else
+                   V(p,t) = 0
+            End If
+        End For
+    End For
+
+End
+#-------------------------------------------------#
+Algorithm Functional_Tag_Selection
+
+Input:
+    DoorLocations D
+    CandidateTags near doors
+    VisibilityMatrix V
+    TagBudget N_tags
+
+Output:
+    T_func
+
+Begin
+    T_func ← empty
+    RemainingBudget ← N_tags
+
+    For each door d ∈ D do
+        Candidates ← tags within door region
+
+        For each t ∈ Candidates do
+            gain(t) ← Σ_p∈door_poses V(p,t)
+        End For
+
+        Select t* = argmax gain(t)
+        Add t* to T_func
+        RemainingBudget ← RemainingBudget − 1
+    End For
+
+End
+#-------------------------------------------------------#
+Algorithm Junction_Tag_MILP
+
+Input:
+    JunctionSet J
+    PreTurnPoseWindows P_pre
+    CandidateTags T_junc
+    VisibilityMatrix V
+    RemainingBudget
+
+Output:
+    T_junc
+
+Begin
+    Define binary variable x_t ∈ {0,1}
+
+    Objective:
+        Maximize Σ_p∈P_pre Σ_t V(p,t) · x_t
+               + w_r · redundancy(p)
+
+    Subject to:
+        ∀ junction j:
+            ∀ p ∈ P_pre(j):
+                Σ_t V(p,t) · x_t ≥ 1
+
+        Σ_t x_t ≤ RemainingBudget
+
+        WallOffsetConstraint(t)
+        TagSpacingConstraint(t)
+
+    Solve MILP
+
+    T_junc ← {t | x_t = 1}
+
+End
+#------------------------------------------#
+Algorithm Straight_Corridor_Greedy
+
+Input:
+    RemainingCandidates T_str
+    VisibilityMatrix V
+    CurrentCoverage C
+    RemainingBudget
+    WallPenalty w_w
+    RedundancyBonus w_r
+
+Output:
+    T_str
+
+Begin
+    T_str ← empty
+
+    While RemainingBudget > 0 do
+
+        For each candidate t ∈ T_str do
+            newCoverage ← poses where V(p,t)=1 AND p∉C
+
+            marginalGain(t) ← |newCoverage|
+                               + w_r · redundancy(t)
+                               − w_w · wallAlternation(t)
+        End For
+
+        Select t* = argmax marginalGain
+
+        If marginalGain(t*) == 0:
+            Break
+        End If
+
+        Add t* to T_str
+        Update C
+        RemainingBudget ← RemainingBudget − 1
+
+    End While
+
+End
+#-------------------------------------------#
+Algorithm Assemble_Tags
+
+Begin
+    T = T_func ∪ T_junc ∪ T_str
+    Return T
+End
+
