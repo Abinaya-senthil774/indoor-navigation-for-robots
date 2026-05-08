@@ -1,0 +1,37 @@
+Algorithm 5: Straight Corridor Tag Placement (Greedy)
+
+Inputs:
+  Visibility matrix V
+  Candidate tag set C
+  Current coverage vector c
+  Selected tag sets Tfunc, Tjunc
+  Total tag budget Ntags
+  Weights w1, w2, w3
+
+Outputs:
+  Corridor tag set Tcorr
+  Updated coverage vector c
+
+1. Compute remaining tag budget:
+     Nrem = Ntags − |Tfunc| − |Tjunc|
+
+2. Initialize:
+     Tcorr ← ∅
+
+3. While Nrem > 0
+     For each candidate tag t ∉ (Tfunc ∪ Tjunc ∪ Tcorr)
+         newCoverage ← number of poses newly covered by t
+         redundancy ← number of already covered poses also visible by t
+         wallPenalty ← penalty based on wall proximity or clustering
+
+         Δ(t) = w1·newCoverage + w2·redundancy − w3·wallPenalty
+     End
+
+     Select t* = argmax Δ(t)
+
+     Tcorr ← Tcorr ∪ {t*}
+     c ← c ∨ V(:,t*)
+     Nrem ← Nrem − 1
+   End
+
+4. Return Tcorr and updated c

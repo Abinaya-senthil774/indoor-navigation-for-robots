@@ -1,0 +1,37 @@
+Algorithm 2: Visibility Matrix Construction
+
+Inputs:
+  Camera intrinsics K
+  Image resolution
+  Selected tag size s*
+  Maximum detection distance dmax
+  Horizontal FOV hfov
+  Map geometry
+  Centerline step size Δs
+
+Outputs:
+  Candidate tag set C
+  Visibility matrix V
+
+1. Generate candidate wall-mounted tag locations C
+     - Place tags along corridor walls
+     - Respect wall offset and corridor geometry
+     - Ensure spacing ≤ dmax
+
+2. Sample robot poses along centerline at spacing Δs
+     P = {p1, p2, ..., pNp}
+
+3. Initialize visibility matrix V ∈ {0,1}^{Np × |C|}
+
+4. For each robot pose pi ∈ P
+     For each candidate tag cj ∈ C
+         Compute distance dij
+         If dij > dmax → continue
+         Compute bearing angle θij
+         If |θij| > hfov/2 → continue
+         If occluded(pi, cj, map) → continue
+         Set Vij = 1
+     End
+   End
+
+5. Return V and C

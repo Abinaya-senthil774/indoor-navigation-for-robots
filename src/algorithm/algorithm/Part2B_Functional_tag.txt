@@ -1,0 +1,34 @@
+Algorithm 3: Functional Tag Placement (Deterministic)
+
+Inputs:
+  Visibility matrix V ∈ {0,1}^{Np × Nc}
+  Candidate tag locations C
+  Door locations D
+  Selection radius rd
+
+Outputs:
+  Functional tag set Tfunc
+  Covered pose indicator vector c
+
+Initialize:
+  Tfunc ← ∅
+  c ← 0_{Np}
+
+for each door d ∈ D do
+    Identify candidate tags:
+        Cd ← { j | ||Cj − d|| ≤ rd }
+
+    if Cd = ∅ then
+        continue
+    end if
+
+    Select best tag:
+        t* ← argmax_{j ∈ Cd} ∑_{i=1}^{Np} V_{i,j}
+
+    Tfunc ← Tfunc ∪ {t*}
+
+    Update coverage:
+        c ← c ∨ V(:, t*)
+end for
+
+Return Tfunc, c
