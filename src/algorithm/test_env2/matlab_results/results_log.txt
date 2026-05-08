@@ -1,0 +1,72 @@
+--- PART 1: TAG FEASIBILITY ANALYSIS ---
+
+======================================================================
+| Tag(m)   | PxThr    | MaxDist(m) | Status          | Score    |
+----------------------------------------------------------------------
+| 0.10     | 30       | 0.73       | Fail:Width      | N/A      |
+| 0.10     | 40       | 0.55       | Fail:Width      | N/A      |
+| 0.10     | 50       | 0.44       | Fail:Width      | N/A      |
+| 0.15     | 30       | 1.10       | OK              | -94.8    |
+| 0.15     | 40       | 0.82       | Fail:Width      | N/A      |
+| 0.15     | 50       | 0.66       | Fail:Width      | N/A      |
+| 0.20     | 30       | 1.46       | OK              | -93.1    |
+| 0.20     | 40       | 1.10       | OK              | 5.1      |
+| 0.20     | 50       | 0.88       | Fail:Width      | N/A      |
+======================================================================
+
+>> OPTIMAL CONFIG SELECTED (Highest Score):
+   Tag Size:     0.20 m
+   Pixel Thresh: 40 px
+   Max Dist:     1.10 m
+
+--- PART 2: GEOMETRY GENERATION ---
+Initial Candidates Generated: 178
+Calculating Visibility Matrix... Done.
+
+--- PART 3: OPTIMIZATION ---
+
+>>> STAGE 1: FUNCTIONAL TAGS <<<
+   > Percentage Used:        2.2% (4 of 178)
+   > Percentage Reduction:   97.8%
+   > Localization Avail:     21.7%
+   > Max Blackout Length:    4.90 m
+
+>>> STAGE 2: JUNCTION TAGS <<<
+   > Percentage Used:        11.2% (20 of 178)
+   > Percentage Reduction:   88.8%
+   > Localization Avail:     60.1%
+   > Max Blackout Length:    2.30 m
+
+>>> STAGE 3: STRAIGHT/ZIG-ZAG TAGS <<<
+
+Iter | Coverage(%) | Uncovered | Candidates | Total Tags
+----------------------------------------------------------
+   1 |      64.49 |        49 |        158 |         21
+   2 |      68.84 |        43 |        157 |         22
+   3 |      73.19 |        37 |        156 |         23
+   4 |      77.54 |        31 |        155 |         24
+   5 |      81.88 |        25 |        154 |         25
+   6 |      84.78 |        21 |        153 |         26
+   7 |      86.96 |        18 |        152 |         27
+   8 |      89.13 |        15 |        151 |         28
+   9 |      90.58 |        13 |        150 |         29
+  10 |      92.03 |        11 |        149 |         30
+  11 |      93.48 |         9 |        148 |         31
+  12 |      94.20 |         8 |        147 |         32
+Stopping: no candidate adds new coverage
+
+Stage 3 completed in 13 iterations.
+Straight tags added: 12
+Final coverage: 94.20 %
+   > Percentage Used:        18.0% (32 of 178)
+   > Percentage Reduction:   82.0%
+   > Localization Avail:     94.2%
+   > Max Blackout Length:    0.30 m
+
+=== FINAL SUMMARY METRICS ===
+   > Percentage Used:        18.0% (32 of 178)
+   > Percentage Reduction:   82.0%
+   > Localization Avail:     94.2%
+   > Max Blackout Length:    0.30 m
+
+Data exported to aruco_tags.csv with +90 deg Webots correction.
