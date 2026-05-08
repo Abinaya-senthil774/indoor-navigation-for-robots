@@ -1,0 +1,11 @@
+====================================================
+   ARUCO LOCALIZATION PERFORMANCE STATISTICS
+====================================================
+Total Distance Travelled:    13.73 m
+Mean Tags Visible:           1.011 (SD: 0.779)
+Max Tags Observed:           3
+----------------------------------------------------
+Localization Reliability:    73.68% (Path with >= 1 Tag)
+Blackout Rate (Failure):     26.32% (Path with 0 Tags)
+Redundancy Rate (Optimal):   24.21% (Path with >= 2 Tags)
+====================================================
