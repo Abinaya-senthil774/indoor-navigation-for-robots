@@ -1,0 +1,59 @@
+--- PART 1: TAG FEASIBILITY ANALYSIS ---
+
+======================================================================
+| Tag(m)   | PxThr    | MaxDist(m) | Status          | Score    |
+----------------------------------------------------------------------
+| 0.05     | 30       | 4.69       | OK              | -76.7    |
+| 0.05     | 40       | 3.52       | OK              | 17.5     |
+| 0.05     | 50       | 2.81       | OK              | -86.0    |
+| 0.10     | 30       | 9.38       | OK              | -53.3    |
+| 0.10     | 40       | 7.03       | OK              | 35.0     |
+| 0.10     | 50       | 5.62       | OK              | -72.1    |
+| 0.15     | 30       | 14.06      | OK              | -30.0    |
+| 0.15     | 40       | 10.55      | OK              | 52.4     |
+| 0.15     | 50       | 8.44       | OK              | -58.1    |
+======================================================================
+
+>> OPTIMAL CONFIG SELECTED (Highest Score):
+   Tag Size:     0.15 m
+   Pixel Thresh: 40 px
+   Max Dist:     10.55 m
+
+--- PART 2: GEOMETRY GENERATION ---
+Initial Candidates Generated: 118
+Calculating Visibility Matrix... Done.
+
+--- PART 3: OPTIMIZATION ---
+
+>>> STAGE 1: FUNCTIONAL TAGS <<<
+   > Percentage Used:        3.4% (4 of 118)
+   > Percentage Reduction:   96.6%
+   > Localization Avail:     34.4%
+   > Max Blackout Length:    2.20 m
+
+>>> STAGE 2: JUNCTION TAGS <<<
+   > Percentage Used:        8.5% (10 of 118)
+   > Percentage Reduction:   91.5%
+   > Localization Avail:     85.9%
+   > Max Blackout Length:    0.70 m
+
+>>> STAGE 3: STRAIGHT/ZIG-ZAG TAGS <<<
+
+Iter | Coverage(%) | Uncovered | Candidates | Total Tags
+----------------------------------------------------------
+   1 |      93.75 |         8 |        108 |         11
+Stopping: no candidate adds new coverage
+
+Stage 3 completed in 2 iterations.
+Straight tags added: 1
+Final coverage: 93.75 %
+   > Percentage Used:        9.3% (11 of 118)
+   > Percentage Reduction:   90.7%
+   > Localization Avail:     93.8%
+   > Max Blackout Length:    0.20 m
+
+=== FINAL SUMMARY METRICS ===
+   > Percentage Used:        9.3% (11 of 118)
+   > Percentage Reduction:   90.7%
+   > Localization Avail:     93.8%
+   > Max Blackout Length:    0.20 m
