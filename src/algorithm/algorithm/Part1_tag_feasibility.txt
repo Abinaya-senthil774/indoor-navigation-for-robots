@@ -1,0 +1,91 @@
+Algorithm Tag_Feasibility
+
+Inputs:
+    K = [fx, fy, cx, cy]          % Camera intrinsics
+    imgWidth, imgHeight           % Image resolution
+    tagSizes = [s1, s2, s3]       % Candidate tag sizes (m)
+    pixelThresh = [30, 40, 50]    % Minimum pixel thresholds (px)
+    mapScale                        % Map scale (m/pixel)
+    centerline                     % Centerline coordinates
+    corridorWidth                  % Corridor width (m)
+    wallOffset                     % Tag-to-centerline offset (m)
+
+Outputs:
+    s_opt                          % Selected tag size
+    pmin_opt                       % Selected pixel threshold
+    d_max_opt                      % Max feasible detection distance
+    cameraTagModel                 % Locked perception parameters
+
+Begin
+
+    feasibleConfigs ← empty list
+
+    % Use conservative focal length
+    f ← min(fx, fy)
+
+    For each s in tagSizes do
+        For each pmin in pixelThresh do
+
+            % Step 1: Compute max detection distance
+            d_max ← (f * s) / pmin
+
+            % Step 2: Check lateral visibility constraint
+            If wallOffset > d_max then
+                continue
+            End If
+
+            % Step 3: Check corridor coverage
+            If corridorWidth > 2 * d_max then
+                continue
+            End If
+
+            % Step 4: Check centerline overlap
+            overlapOK ← CheckDetectionOverlap(centerline, d_max)
+
+            If overlapOK == true then
+                Store (s, pmin, d_max) in feasibleConfigs
+            End If
+
+        End For
+    End For
+
+    % Step 5: Select optimal configuration
+    % Priority: moderate pixel threshold + reasonable detection range
+    (s_opt, pmin_opt, d_max_opt) ← SelectBestConfig(feasibleConfigs)
+
+    % Step 6: Lock perception model
+    cameraTagModel.s ← s_opt
+    cameraTagModel.pmin ← pmin_opt
+    cameraTagModel.dmax ← d_max_opt
+    cameraTagModel.K ← K
+
+End
+
+Function overlapOK = CheckDetectionOverlap(centerline, d_max)
+
+    poseSpacing ← DistanceBetweenConsecutive(centerline)
+
+    If poseSpacing <= d_max then
+        overlapOK ← true
+    Else
+        overlapOK ← false
+    End If
+
+End Function
+
+Function bestConfig = SelectBestConfig(feasibleConfigs)
+
+    % Prefer:
+    % 1) Middle pixel threshold (robust detection)
+    % 2) Adequate detection range
+    % 3) Smaller tag size if tie
+
+    Rank feasibleConfigs by:
+        pmin closest to 40
+        then by maximum d_max
+        then by minimum s
+
+    bestConfig ← top ranked entry
+
+End Function
+
