@@ -1,0 +1,59 @@
+Case1: 12 tags
+--- CHECK ---
+Pass: All tags meet minimum separation criteria.
+
+--- FINAL SUMMARY ---
+Functional Tags : 5
+Junction Tags   : 4
+Corridor Tags   : 3
+Total Used      : 12
+Final Coverage  : 48.15%
+
+Case2- 40 tags
+
+--- CHECK ---
+Pass: All tags meet minimum separation criteria.
+
+--- FINAL SUMMARY ---
+Functional Tags : 5
+Junction Tags   : 4
+Corridor Tags   : 31
+Total Used      : 40
+Final Coverage  : 59.26%
+
+Case3- 100tags
+
+--- CHECK ---
+Warning: Tag 48 and 2 are very close (0.18m)
+Warning: Tag 34 and 18 are very close (0.19m)
+Warning: Tag 50 and 12 are very close (0.19m)
+Warning: Tag 32 and 8 are very close (0.18m)
+Notice: 4 pairs are within the proximity threshold.
+
+--- FINAL SUMMARY ---
+Functional Tags : 5
+Junction Tags   : 4
+Corridor Tags   : 43
+Total Used      : 52
+Final Coverage  : 79.26%
+>> 
+
+Final Case:
+Calculating Visibility Matrix... Done.
+
+[Step 1] Functional Tags Placed: 5 | Coverage: 14.81%
+[Step 2] Junction Tags Placed:   4 | Coverage: 37.04%
+[Step 3] Corridor Tags Placed:   31 | Coverage: 59.26%
+
+--- PROXIMITY CHECK ---
+Pass: All tags meet minimum separation criteria.
+
+SUCCESS: Tag schedule exported to "final_tag_schedule.xlsx"
+
+--- FINAL SUMMARY ---
+Functional Tags : 5
+Junction Tags   : 4
+Corridor Tags   : 31
+Total Used      : 40
+Final Coverage  : 59.26%
+>> 
