@@ -47,9 +47,13 @@ The tag placement strategy follows a structured, visibility-aware optimization f
 ---
 ## Results
 ![methodology](/assets/fig10.png)
+
 ![methodology](/assets/fig10b.png)
+
 ![methodology](/assets/fig11.jpg)
+
 ![methodology](/assets/fig12a.png)
+
 The proposed hierarchical optimization technique yielded significant improvements over manual and uniform placement strategies:
 
 **1. Localization Availability:** Achieved 94.2% availability in simulated environments and 92% - 98.6% in real-time hardware validation.
