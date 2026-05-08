@@ -1,0 +1,52 @@
+%% ====================================================================
+%% PART 2 — Map & Geometry Generation
+%% ====================================================================
+fprintf('--- PART 2: GEOMETRY GENERATION ---\n');
+ds_map = 0.01; % Resolution
+
+% --- 1. DEFINE DETAILED MAP ---
+x_out = -2:ds_map:2; y_out = -2:ds_map:2;
+OuterTop    = [x_out',  2*ones(length(x_out),1)];
+OuterBottom = [x_out', -2*ones(length(x_out),1)];
+OuterLeft   = [-2*ones(length(y_out),1), y_out'];
+OuterRight  = [ 2*ones(length(y_out),1), y_out'];
+
+x_in = -1.5:ds_map:1.5;
+InnerTop    = [x_in',  1.25*ones(length(x_in),1)];
+InnerBottom = [x_in', -1.25*ones(length(x_in),1)];
+
+y_seg1 = 1.25:-ds_map:0.615;
+y_seg2 = 0.385:-ds_map:-0.385;
+y_seg3 = -0.615:-ds_map:-1.25;
+
+LeftWall = [
+    [-1.5*ones(length(y_seg1),1), y_seg1'];           
+    make_notch_geometry(-1.5, -1.0, 0.615, 0.23, ds_map);
+    [-1.5*ones(length(y_seg2),1), y_seg2'];           
+    make_notch_geometry(-1.5, -1.0, -0.385, 0.23, ds_map);
+    [-1.5*ones(length(y_seg3),1), y_seg3'];           
+];
+
+RightWall = [
+    [1.5*ones(length(y_seg1),1), y_seg1'];            
+    make_notch_geometry(1.5, 1.0, 0.615, 0.23, ds_map);  
+    [1.5*ones(length(y_seg2),1), y_seg2'];            
+    make_notch_geometry(1.5, 1.0, -0.385, 0.23, ds_map); 
+    [1.5*ones(length(y_seg3),1), y_seg3'];            
+];
+
+MapPoints = [OuterTop; OuterBottom; OuterLeft; OuterRight; ...
+             InnerTop; InnerBottom; LeftWall; RightWall];
+
+% --- 2. DEFINE ROBOT PATH (Red Centerline) ---
+ds_path = 0.1;
+P_Top = [(-path_X_mag:ds_path:path_X_mag)', path_Y_mag*ones(length(-path_X_mag:ds_path:path_X_mag),1)];
+P_Right = [path_X_mag*ones(length(-path_Y_mag:ds_path:path_Y_mag),1), (path_Y_mag:-ds_path:-path_Y_mag)'];
+P_Bot = [(path_X_mag:-ds_path:-path_X_mag)', -path_Y_mag*ones(length(path_X_mag:-ds_path:-path_X_mag),1)];
+P_Left = [-path_X_mag*ones(length(-path_Y_mag:ds_path:path_Y_mag),1), (-path_Y_mag:ds_path:path_Y_mag)'];
+poses = [P_Top; P_Right; P_Bot; P_Left];
+Np = size(poses,1);
+
+% Path Distance
+distVals = zeros(Np,1); currentD = 0;
+for i = 2:Np, step=norm(poses(i,:)-poses(i-1,:)); if step>ds_path*2, step=0; end; currentD=currentD+step; distVals(i)=currentD; end
