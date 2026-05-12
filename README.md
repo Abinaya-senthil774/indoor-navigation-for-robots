@@ -1,7 +1,5 @@
 # Hierarchical Optimization Technique for Placement of Visual Landmarks for Robot Navigation in Repetitive Structured Indoor Environments
 
-# Autonomous Indoor Navigation System Using Visual Beacons
-
 ## Description
 This repository contains the source code, simulations, and documentation for a cost-effective, vision-based autonomous indoor navigation system designed for mobile robots. Navigating repetitive, GPS-denied environments—such as hotel corridors or hospitals—often causes spatial ambiguity and traditional SLAM failures. To resolve this without relying on expensive LiDAR systems, this project utilizes passive ArUco markers as navigation beacons. 
 
